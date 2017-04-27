@@ -8390,7 +8390,7 @@
 
 		},
 
-		setFromMatrix4: function( m ) {
+		setFromMatrix4: function ( m ) {
 
 			var me = m.elements;
 
@@ -8490,6 +8490,7 @@
 				}
 
 				return this.identity();
+
 			}
 
 			var detInv = 1 / det;
@@ -8550,7 +8551,7 @@
 
 			if ( offset === undefined ) offset = 0;
 
-			for( var i = 0; i < 9; i ++ ) {
+			for ( var i = 0; i < 9; i ++ ) {
 
 				this.elements[ i ] = array[ i + offset ];
 
@@ -8577,7 +8578,7 @@
 
 			array[ offset + 6 ] = te[ 6 ];
 			array[ offset + 7 ] = te[ 7 ];
-			array[ offset + 8 ]  = te[ 8 ];
+			array[ offset + 8 ] = te[ 8 ];
 
 			return array;
 
@@ -15020,7 +15021,7 @@
 						uvB.fromBufferAttribute( uv, b );
 						uvC.fromBufferAttribute( uv, c );
 
-						intersection.uv = uvIntersection( intersectionPoint,  vA, vB, vC, uvA, uvB, uvC );
+						intersection.uv = uvIntersection( intersectionPoint, vA, vB, vC, uvA, uvB, uvC );
 
 					}
 
@@ -16308,7 +16309,15 @@
 			( extensions.shaderTextureLOD || parameters.envMap ) && rendererExtensions.get( 'EXT_shader_texture_lod' ) ? '#extension GL_EXT_shader_texture_lod : enable' : ''
 		];
 
-		return chunks.filter( filterEmptyLine ).join( '\n' );
+		var joined = chunks.filter( filterEmptyLine ).join( '\n' );
+
+		if ( '' !== joined ) {
+
+			joined += '\n';
+
+		}
+
+		return joined;
 
 	}
 
@@ -16326,7 +16335,15 @@
 
 		}
 
-		return chunks.join( '\n' );
+		var joined = chunks.join( '\n' );
+
+		if ( '' !== joined ) {
+
+			joined += '\n';
+
+		}
+
+		return joined;
 
 	}
 
@@ -16512,16 +16529,12 @@
 
 				customDefines,
 
-				'\n'
-
 			].filter( filterEmptyLine ).join( '\n' );
 
 			prefixFragment = [
 
 				customExtensions,
 				customDefines,
-
-				'\n'
 
 			].filter( filterEmptyLine ).join( '\n' );
 
@@ -35443,7 +35456,7 @@
 
 		update: ( function () {
 
-			var instance, focus, fov, aspect, near, far, zoom;
+			var instance, focus, fov, aspect, near, far, zoom, eyeSep;
 
 			var eyeRight = new Matrix4();
 			var eyeLeft = new Matrix4();
@@ -35452,7 +35465,7 @@
 
 				var needsUpdate = instance !== this || focus !== camera.focus || fov !== camera.fov ||
 													aspect !== camera.aspect * this.aspect || near !== camera.near ||
-													far !== camera.far || zoom !== camera.zoom;
+													far !== camera.far || zoom !== camera.zoom || eyeSep !== this.eyeSep;
 
 				if ( needsUpdate ) {
 
@@ -35468,7 +35481,7 @@
 					// http://paulbourke.net/stereographics/stereorender/
 
 					var projectionMatrix = camera.projectionMatrix.clone();
-					var eyeSep = this.eyeSep / 2;
+					eyeSep = this.eyeSep / 2;
 					var eyeSepOnProjection = eyeSep * near / focus;
 					var ymax = ( near * Math.tan( _Math.DEG2RAD * fov * 0.5 ) ) / zoom;
 					var xmin, xmax;
